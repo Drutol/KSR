@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2027
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KSR.Classification", "KSR.Classification\KSR.Classification.csproj", "{946D12A5-6074-400E-9314-FC25239A2F8F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{946D12A5-6074-400E-9314-FC25239A2F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{946D12A5-6074-400E-9314-FC25239A2F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{946D12A5-6074-400E-9314-FC25239A2F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{946D12A5-6074-400E-9314-FC25239A2F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9C52DCC8-0A79-4507-9F22-46263B7522A8}
+	EndGlobalSection
+EndGlobal
