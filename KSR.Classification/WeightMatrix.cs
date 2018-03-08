@@ -31,7 +31,7 @@ namespace KSR.Classification
             }
         }
 
-        public WeightMatrix(List<Article> articles, int correlationId)
+        public WeightMatrix(List<Article> articles, int correlationId, Action<int> onProgress, Action<int> onPartEvaluated = null)
         {
             _correlationId = correlationId;
             _articles = articles.ToList();
@@ -42,6 +42,8 @@ namespace KSR.Classification
             var part2 = part;
             if (correlationId == 9)
                 part2 += 20;
+            onPartEvaluated?.Invoke(part2);
+
             for (int i = part * correlationId; i < part * correlationId + part2 && i < _distinctWords.Count; i++)
             {
                 i = i < 0 ? 0 : i;
@@ -49,18 +51,24 @@ namespace KSR.Classification
                 var termFrequencyInDocuments =
                     allWords.Count(s1 => s1.Equals(_distinctWords[i])) / (double) allWords.Count;
                 Debug.WriteLine($"{counter++}/{part}");
-                for (int j = 0; j < _articles.Count; j++)
+                onProgress(counter);
+                foreach (var article in _articles)
                 {
                     double weightSum = 0;
-                    var inverseDocFreq = GetFrequency(_articles[j], _distinctWords[i]) * Math.Log(_articles.Count, 2);
-                    for (int s = 0; s < _distinctWords.Count; s++)
+                    var freq = GetFrequency(article, _distinctWords[i]);
+                    var inverseDocFreq = freq * Math.Log(_articles.Count, 2);
+                    if (freq != 0)
                     {
-                        var temp = _articles[j].Words.Count(s1 => s1.Equals(_distinctWords[s]));
-                        var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
-                        weightSum += temp2 * temp2;
+                        foreach (var t in _distinctWords)
+                        {
+                            var temp = article.Words.Count(s1 => s1.Equals(t));
+                            var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
+                            weightSum += temp2 * temp2;
+                        }
+                        weightsForWord.Add(inverseDocFreq / weightSum);
                     }
 
-                    weightsForWord.Add(inverseDocFreq / weightSum);
+                    weightsForWord.Add(0);
                 }
 
                 _weights.Add(_distinctWords[i], weightsForWord);
@@ -84,17 +92,9 @@ namespace KSR.Classification
             return distances.Zip(_articles, (d, a) => (a, d)).ToList();
         }
 
-        private List<double> GetFrequency(string word)
-        {
-            return _articles.Select(article =>
-                article.Words.Count(s => s.Equals(word, StringComparison.CurrentCultureIgnoreCase)) /
-                (double) article.Words.Count).ToList();
-        }
-
         private double GetFrequency(Article article, string word)
         {
-            return article.Words.Count(s => s.Equals(word, StringComparison.CurrentCultureIgnoreCase)) /
-                   (double) article.Words.Count;
+            return article.Words.Count(s => s.Equals(word, StringComparison.CurrentCultureIgnoreCase));
         }
     }
 }

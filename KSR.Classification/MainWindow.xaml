@@ -6,7 +6,47 @@
         xmlns:local="clr-namespace:KSR.Classification"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
-    <Grid>
-        <Button Click="ButtonBase_OnClick"></Button>
+    <Grid Background="#f2f2f2">
+        <StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Click="AnalyseDocuments" Content="Analyze documents" Padding="16" HorizontalAlignment="Center"  Margin="0,40,10,0"/>
+                <Button Click="ButtonBase_OnClick" IsEnabled="True" Content="Build weight matrix" Padding="16" HorizontalAlignment="Center"  Margin="10,40,0,0"/>
+            </StackPanel>
+
+            <Border Background="#c2c2c2" Margin="0,20,0,0" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Loaded documents info:" Margin="0,20,0,0" FontSize="24"/>
+                    <StackPanel Orientation="Horizontal">
+                        <StackPanel>
+                            <TextBlock Text="Article Count:" FontSize="18"/>
+                            <TextBlock x:Name="ArticlesCountLabel" Text="N/A" FontSize="20"/>
+                        </StackPanel>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Articles with selected category tags:" FontSize="18"/>
+                            <TextBlock x:Name="ArticlesWithCountLabel" Text="N/A" FontSize="20"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <TextBlock Text="Classification categories found:" FontSize="24"/>
+                    <ComboBox SelectionChanged="CategoriesComboBox_OnSelectionChanged" x:Name="CategoriesComboBox" HorizontalAlignment="Left" MinWidth="200" Margin="0,10,0,0"/>
+                </StackPanel>
+
+            </Border>
+
+            <Border  Background="#b2b2b2" Margin="0,20,0,0" Padding="20">
+                <StackPanel>
+                    <TextBlock Text="Matrix building progress:" Margin="0,20,0,0"/>
+                    <Grid Margin="0,0,0,20">
+                        <ProgressBar x:Name="ProgressBar" Height="30"/>
+                        <TextBlock x:Name="ProgressLabel" Text="Not started" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+        
+        <Grid x:Name="LoadingDocumentsGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
+            <ProgressBar VerticalAlignment="Center" IsIndeterminate="True"/> 
+        </Grid>
+        
     </Grid>
 </Window>

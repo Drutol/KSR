@@ -8,7 +8,7 @@ namespace KSR.Classification.Models
 {
     public class Article
     {
-        public List<string> Tags { get; set; }
+        public Dictionary<string,List<string>> Tags { get; set; }
         public List<string> Words { get; set; }
     }
 }
