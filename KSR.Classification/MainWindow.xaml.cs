@@ -23,7 +23,7 @@ namespace KSR.Classification
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly int[] _progress = new int[10];
+        private readonly int[] _progress = new int[20];
         private int _totalParts;
         private List<Article> _readDocuments;
 
@@ -38,43 +38,40 @@ namespace KSR.Classification
             var cts = new CancellationTokenSource();
             StartObservingProgress(cts.Token);
 
-           
+
             var tasks = new List<Task<WeightMatrix>>();
+            var topic = CategoriesComboBox.SelectedItem as string;
 
             var docSet = _readDocuments
-                .Where(article => article.Tags.ContainsKey(CategoriesComboBox.SelectedItem as string)).ToList();
+                .Where(article => article.Tags.ContainsKey(topic)).ToList();
 
-            for (int i = 0; i < 10; i++)
+            for (int i = 0; i < 20; i++)
             {
                 var i1 = i;
-                tasks.Add(Task.Run(() => new WeightMatrix(docSet, i1, counter => _progress[i1] = counter,
-                    i1 == 0 ? new Action<int>(i2 => _totalParts = i2*10) : null)));
+                tasks.Add(Task.Factory.StartNew(() => new WeightMatrix(docSet, i1, counter => _progress[i1] = counter,
+                    i1 == 0 ? new Action<int>(i2 => _totalParts = i2 * 20) : null)));
             }
+
             await Task.WhenAll(tasks);
             cts.Cancel();
 
             var finalMatrix = new WeightMatrix(tasks.Select(task => task.Result));
             var rand = new Random();
+            var results = new List<ClassifiedArticle>();
             for (int i = 0; i < 30; i++)
             {
                 var index = rand.Next(docSet.Count);
-                try
-                {                   
-                    var dist = finalMatrix.GetDistance(docSet[index]);
 
-                    Debug.WriteLine($"Article tags: {string.Join(",", docSet[index].Tags)}");
-                    Debug.WriteLine($"Top results:");
-                    foreach (var valueTuple in dist.OrderBy(tuple => tuple.Distance).Take(3))
-                    {
-                        Debug.WriteLine($"Matching tags: {string.Join(",", valueTuple.Article.Tags)}");
-                    }
-                    Debug.WriteLine($"\n\n");
-                }
-                catch (Exception exception)
+                var dist = finalMatrix.GetDistance(docSet[index]);
+                results.Add(new ClassifiedArticle(topic)
                 {
-
-                }
+                    Article = docSet[index],
+                    Neighbours = dist.OrderBy(tuple => tuple.Distance).Skip(1).Take(3)
+                        .Select(tuple => tuple.Article).ToList(),
+                });
             }
+
+            ResultsView.ItemsSource = results;
         }
 
         private async void StartObservingProgress(CancellationToken  token)

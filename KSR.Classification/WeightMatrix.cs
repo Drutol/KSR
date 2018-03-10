@@ -37,10 +37,10 @@ namespace KSR.Classification
             _articles = articles.ToList();
             _distinctWords = articles.SelectMany(article => article.Words).Distinct().ToList();
             var allWords = _articles.SelectMany(article => article.Words).ToList();
-            var part = _distinctWords.Count / 10;
+            var part = _distinctWords.Count / 20;
             int counter = 0;
             var part2 = part;
-            if (correlationId == 9)
+            if (correlationId == 19)
                 part2 += 20;
             onPartEvaluated?.Invoke(part2);
 
@@ -56,19 +56,20 @@ namespace KSR.Classification
                 {
                     double weightSum = 0;
                     var freq = GetFrequency(article, _distinctWords[i]);
-                    var inverseDocFreq = freq * Math.Log(_articles.Count, 2);
-                    if (freq != 0)
-                    {
-                        foreach (var t in _distinctWords)
-                        {
-                            var temp = article.Words.Count(s1 => s1.Equals(t));
-                            var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
-                            weightSum += temp2 * temp2;
-                        }
-                        weightsForWord.Add(inverseDocFreq / weightSum);
-                    }
+                    //var inverseDocFreq = freq * Math.Log(_articles.Count, 2);
+                    //if (freq != 0)
+                    //{
+                    //    foreach (var t in _distinctWords)
+                    //    {
+                    //        var temp = article.Words.Count(s1 => s1.Equals(t));
+                    //        var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
+                    //        weightSum += temp2 * temp2;
+                    //    }
+                    //    weightsForWord.Add(inverseDocFreq / weightSum);
+                    //}
 
-                    weightsForWord.Add(0);
+                    //weightsForWord.Add(0);
+                    weightsForWord.Add(freq);
                 }
 
                 _weights.Add(_distinctWords[i], weightsForWord);

@@ -4,9 +4,14 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:KSR.Classification"
+        xmlns:models="clr-namespace:KSR.Classification.Models"
         mc:Ignorable="d"
         Title="MainWindow" Height="350" Width="525">
     <Grid Background="#f2f2f2">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Click="AnalyseDocuments" Content="Analyze documents" Padding="16" HorizontalAlignment="Center"  Margin="0,40,10,0"/>
@@ -44,9 +49,43 @@
             </Border>
         </StackPanel>
         
-        <Grid x:Name="LoadingDocumentsGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
+        <ListView x:Name="ResultsView" Grid.Row="1">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid d:DataContext="{d:DesignInstance models:ClassifiedArticle}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel>
+                            <TextBlock Text="Title"/>
+                            <TextBlock Text="{Binding Article.Title}"/>     
+                            <TextBlock Text="Original tags"/>
+                            <TextBlock Text="{Binding OriginalTags}" FontSize="18"/>
+                        </StackPanel>
+
+                        <StackPanel Grid.Column="1" VerticalAlignment="Bottom">
+                            <TextBlock Text="Matched tags"/>
+                            <TextBlock Text="{Binding MatchedTags}" FontSize="18"/>
+                        </StackPanel>
+
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        
+        <Grid Grid.Row="0" Grid.RowSpan="2" x:Name="LoadingDocumentsGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
             <ProgressBar VerticalAlignment="Center" IsIndeterminate="True"/> 
         </Grid>
         
+        
+
     </Grid>
 </Window>

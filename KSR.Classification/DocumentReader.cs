@@ -15,7 +15,7 @@ namespace KSR.Classification
     {
         public IEnumerable<Article> ObtainVectorSpaceModels()
         {
-            for (int i = 0; i < 1; i++)
+            for (int i = 0; i < 7; i++)
             {
                 var rawXml = File.ReadAllText($"Data/reut2-{i.ToString().PadLeft(3, '0')}.sgm");
                 var doc = new HtmlDocument();
@@ -37,7 +37,8 @@ namespace KSR.Classification
                         {
                             Words = regex.Replace(body.InnerText, " ").ToLower().Split(' ').Where(s => s.Length > 2)
                                 .ToList(),
-                            Tags = tags
+                            Tags = tags,
+                            Title = article.Descendants("TITLE").First().InnerText
                         };
                     }
                 }
