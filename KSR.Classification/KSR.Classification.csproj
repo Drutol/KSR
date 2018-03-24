@@ -60,6 +60,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Interafces\IMetric.cs" />
+    <Compile Include="Metrics\EuclideanMetric.cs" />
     <Compile Include="Models\ClassifiedArticle.cs" />
     <Compile Include="WeightMatrix.cs" />
     <Page Include="MainWindow.xaml">

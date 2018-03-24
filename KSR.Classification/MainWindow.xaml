@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:KSR.Classification"
         xmlns:models="clr-namespace:KSR.Classification.Models"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="650" Width="825">
     <Grid Background="#f2f2f2">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -31,6 +31,22 @@
                             <TextBlock Text="Articles with selected category tags:" FontSize="18"/>
                             <TextBlock x:Name="ArticlesWithCountLabel" Text="N/A" FontSize="20"/>
                         </StackPanel>
+                        
+                        
+                        <GroupBox Header="Metric" Margin="16,0" VerticalAlignment="Top">
+                            <StackPanel Margin="16">
+                                <RadioButton Content="Euclides"/>
+                                <RadioButton Content="Manhattan"/>
+                                <RadioButton Content="Chebyshev"/>
+                            </StackPanel>
+                        </GroupBox>
+
+                        <StackPanel Margin="20,0,0,0">
+                            <TextBlock Text="Articles with selected category tags:" FontSize="18"/>
+                            <Slider x:Name="KSlider" Minimum="1" Maximum="10" IsSnapToTickEnabled="True" TickFrequency="1"  FontSize="20"/>
+                            <TextBlock Width="20" HorizontalAlignment="Center" TextAlignment="Center" FontSize="16" Text="{Binding ElementName=KSlider,Path=Value}"/>
+                        </StackPanel>
+
                     </StackPanel>
                     <TextBlock Text="Classification categories found:" FontSize="24"/>
                     <ComboBox SelectionChanged="CategoriesComboBox_OnSelectionChanged" x:Name="CategoriesComboBox" HorizontalAlignment="Left" MinWidth="200" Margin="0,10,0,0"/>
@@ -47,6 +63,17 @@
                     </Grid>
                 </StackPanel>
             </Border>
+
+            <Grid HorizontalAlignment="Stretch">
+                <TextBlock x:Name="AccuracyBox" Margin="8" Text="Accuracy: N/A" HorizontalAlignment="Left"></TextBlock>
+                
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="8">
+                    <TextBlock Text="% of learning data" VerticalAlignment="Center"/>
+                    <Slider x:Name="DataDivisionSlider" VerticalAlignment="Center" Margin="8,0" Width="150" Minimum="1" Value="60" Maximum="80" IsSnapToTickEnabled="True" TickFrequency="1"/>
+                    <TextBlock Width="20" TextAlignment="Center" FontSize="16" Text="{Binding ElementName=DataDivisionSlider,Path=Value}"/>
+                </StackPanel>
+            </Grid>
+            
         </StackPanel>
         
         <ListView x:Name="ResultsView" Grid.Row="1">
@@ -79,13 +106,10 @@
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>
-        
-        
-        <Grid Grid.Row="0" Grid.RowSpan="2" x:Name="LoadingDocumentsGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
-            <ProgressBar VerticalAlignment="Center" IsIndeterminate="True"/> 
-        </Grid>
-        
-        
 
+
+        <Grid Grid.Row="0" Grid.RowSpan="2" x:Name="LoadingDocumentsGrid" Visibility="Collapsed" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="#7f000000">
+            <ProgressBar VerticalAlignment="Center" IsIndeterminate="True"/>
+        </Grid>
     </Grid>
 </Window>

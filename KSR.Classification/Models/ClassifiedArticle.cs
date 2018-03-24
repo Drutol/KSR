@@ -21,5 +21,8 @@ namespace KSR.Classification.Models
         public string MatchedTags => string.Join(",", Neighbours.SelectMany(article => article.Tags[_classificationTopic]).Distinct());
 
         public string OriginalTags => string.Join(",", Article.Tags[_classificationTopic].Distinct());
+
+        public bool IsMatch => Neighbours.SelectMany(article => article.Tags[_classificationTopic]).Any(tag =>
+            Article.Tags[_classificationTopic].Any(correctTag => correctTag.Equals(tag)));
     }
 }

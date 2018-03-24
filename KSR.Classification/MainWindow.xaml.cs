@@ -27,6 +27,11 @@ namespace KSR.Classification
         private int _totalParts;
         private List<Article> _readDocuments;
 
+        private List<string> _validPlaces = new List<string>
+        {
+            "west-germany", "usa", "france", "uk", "canada", "japan"
+        };
+
         public MainWindow()
         {
             InitializeComponent();
@@ -44,32 +49,100 @@ namespace KSR.Classification
 
             var docSet = _readDocuments
                 .Where(article => article.Tags.ContainsKey(topic)).ToList();
+            if (topic == "places")
+                docSet = docSet.Where(article => article.Tags.ContainsKey("places") &&
+                        article.Tags["places"].Count == 1 && _validPlaces.Any(s => s.Equals(article.Tags["places"][0])))
+                    .ToList();
+            
+
+            var wordFrequencies = new Dictionary<string,double>();
+            var allWords = docSet.SelectMany(article => article.Words).ToList();
+            var distinctWords = allWords.Distinct().ToList();
+
+            var freqTasks = new List<Task<Dictionary<string,double>>>();
+            for (int i = 0; i < 10; i++)
+            {
+                var i1 = i;
+                freqTasks.Add(Task.Factory.StartNew(() =>
+                {
+                    var output = new Dictionary<string,double>();
+                    var words = distinctWords.Skip(i1 * distinctWords.Count / 10).Take(distinctWords.Count / 10).ToList();
+                    int count = 0;
+                    foreach (var word in words)
+                    {
+                        Debug.WriteLine($"{count++}/{words.Count}");
+                        output[word] = allWords.Count(
+                                           s => s.Equals(word, StringComparison.CurrentCultureIgnoreCase)) /
+                                       (double)allWords.Count;
+                    }
+                    return output;
+                }));
+            }
+
+            LoadingDocumentsGrid.Visibility = Visibility.Visible;
+            await Task.WhenAll(freqTasks);
+            LoadingDocumentsGrid.Visibility = Visibility.Collapsed;
+
+            var freqResults = freqTasks.Select(task => task.Result);
+            foreach (var freqResult in freqResults)
+            {
+                foreach (var d in freqResult)
+                {
+                    wordFrequencies[d.Key] = d.Value;
+                }
+            }
+
+            var finalWords = wordFrequencies.OrderByDescending(tuple => tuple.Value).Take(1000).Select(tuple => tuple.Key).ToList();
+
 
             for (int i = 0; i < 20; i++)
             {
                 var i1 = i;
-                tasks.Add(Task.Factory.StartNew(() => new WeightMatrix(docSet, i1, counter => _progress[i1] = counter,
+                tasks.Add(Task.Factory.StartNew(() => new WeightMatrix(docSet, finalWords.ToList(), i1,
+                    counter => _progress[i1] = counter,
                     i1 == 0 ? new Action<int>(i2 => _totalParts = i2 * 20) : null)));
             }
 
             await Task.WhenAll(tasks);
             cts.Cancel();
-
+            ProgressBar.Value = _totalParts;
+            ProgressLabel.Text = $"{_totalParts}/{_totalParts}";
             var finalMatrix = new WeightMatrix(tasks.Select(task => task.Result));
-            var rand = new Random();
             var results = new List<ClassifiedArticle>();
-            for (int i = 0; i < 30; i++)
+            var articlesToTake = (int)(DataDivisionSlider.Value * docSet.Count / 100);
+            LoadingDocumentsGrid.Visibility = Visibility.Visible;
+            var k = (int) KSlider.Value;
+            await Task.Run(() =>
             {
-                var index = rand.Next(docSet.Count);
-
-                var dist = finalMatrix.GetDistance(docSet[index]);
-                results.Add(new ClassifiedArticle(topic)
+                for (int i = 0; i < articlesToTake; i++)
                 {
-                    Article = docSet[index],
-                    Neighbours = dist.OrderBy(tuple => tuple.Distance).Skip(1).Take(3)
-                        .Select(tuple => tuple.Article).ToList(),
-                });
-            }
+
+                    var dist = finalMatrix.GetDistance(docSet[i]);
+                    var neighbours = dist.OrderBy(tuple => tuple.Distance).Skip(1).Take(k)
+                        .Select(tuple => tuple.Article).ToList();
+                    var buckets = new Dictionary<string, int>();
+                    var bucketKeys = new Dictionary<string, Article>();
+                    foreach (var neighbour in neighbours)
+                    {
+                        var key = string.Join("", neighbour.Tags[topic].OrderBy(t => t[0]));
+                        if (!bucketKeys.ContainsKey(key))
+                            bucketKeys.Add(key, neighbour);
+                        if (!buckets.ContainsKey(key))
+                            buckets.Add(key, 0);
+                        buckets[key]++;
+                    }
+
+                    results.Add(new ClassifiedArticle(topic)
+                    {
+                        Article = docSet[i],
+                        Neighbours =
+                            new List<Article> {bucketKeys[buckets.OrderByDescending(pair => pair.Value).First().Key]}
+                    });
+                }
+            });
+            LoadingDocumentsGrid.Visibility = Visibility.Collapsed;
+            var correct = results.Count(article => article.IsMatch);
+            AccuracyBox.Text = $"{100 * correct / articlesToTake}% ({correct}/{articlesToTake})";
 
             ResultsView.ItemsSource = results;
         }
@@ -122,8 +195,16 @@ namespace KSR.Classification
 
         private void CategoriesComboBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            ArticlesWithCountLabel.Text = _readDocuments
-                .Count(article => article.Tags.ContainsKey(CategoriesComboBox.SelectedItem as string)).ToString();
+            var topic = CategoriesComboBox.SelectedItem as string;
+            var docSet = new List<Article>();
+            if (topic == "places")
+                docSet = _readDocuments.Where(article => article.Tags.ContainsKey("places") &&
+                        article.Tags["places"].Count == 1 && _validPlaces.Any(s => s.Equals(article.Tags["places"][0])))
+                    .ToList();
+            else
+                docSet = _readDocuments;
+            ArticlesWithCountLabel.Text = docSet
+                .Count(article => article.Tags.ContainsKey(topic)).ToString();
         }
     }
 }

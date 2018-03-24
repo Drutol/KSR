@@ -4,12 +4,16 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using KSR.Classification.Interafces;
+using KSR.Classification.Metrics;
 using KSR.Classification.Models;
 
 namespace KSR.Classification
 {
     public class WeightMatrix
     {
+        public IMetric CurrentMetric { get; set; } = new EuclideanMetric();
+
         private readonly int _correlationId;
         public Dictionary<string, List<double>> _weights = new Dictionary<string, List<double>>();
         private List<string> _distinctWords;
@@ -31,12 +35,13 @@ namespace KSR.Classification
             }
         }
 
-        public WeightMatrix(List<Article> articles, int correlationId, Action<int> onProgress, Action<int> onPartEvaluated = null)
+        public WeightMatrix(List<Article> articles, List<string> allWords, int correlationId, Action<int> onProgress,
+            Action<int> onPartEvaluated = null)
         {
             _correlationId = correlationId;
             _articles = articles.ToList();
-            _distinctWords = articles.SelectMany(article => article.Words).Distinct().ToList();
-            var allWords = _articles.SelectMany(article => article.Words).ToList();
+            _distinctWords = allWords;
+
             var part = _distinctWords.Count / 20;
             int counter = 0;
             var part2 = part;
@@ -56,38 +61,44 @@ namespace KSR.Classification
                 {
                     double weightSum = 0;
                     var freq = GetFrequency(article, _distinctWords[i]);
-                    //var inverseDocFreq = freq * Math.Log(_articles.Count, 2);
-                    //if (freq != 0)
-                    //{
-                    //    foreach (var t in _distinctWords)
-                    //    {
-                    //        var temp = article.Words.Count(s1 => s1.Equals(t));
-                    //        var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
-                    //        weightSum += temp2 * temp2;
-                    //    }
-                    //    weightsForWord.Add(inverseDocFreq / weightSum);
-                    //}
-
-                    //weightsForWord.Add(0);
-                    weightsForWord.Add(freq);
+                    var inverseDocFreq = freq * Math.Log(_articles.Count, 2);
+                    if (freq != 0)
+                    {
+                        foreach (var t in _distinctWords)
+                        {
+                            var temp = article.Words.Count(s1 => s1.Equals(t));
+                            var temp2 = temp * Math.Log(_articles.Count / termFrequencyInDocuments, 2);
+                            weightSum += temp2 * temp2;
+                        }
+                        weightsForWord.Add(inverseDocFreq / weightSum);
+                    }
+                    else
+                    {
+                        weightsForWord.Add(0);
+                    }
+                    
+                    //weightsForWord.Add(freq);
                 }
 
                 _weights.Add(_distinctWords[i], weightsForWord);
             }
         }
 
-        public List<(Article Article,double Distance)> GetDistance(Article article)
+        public List<(Article Article, double Distance)> GetDistance(Article article)
         {
             var articleIndex = _articles.IndexOf(article);
             var distances = new double[_articles.Count];
             for (int i = 0; i < _articles.Count; i++)
             {
-                for (int r = 0; r < _distinctWords.Count; r++)
+                var firstVector = new List<double>();
+                var secondVector = new List<double>();
+                foreach (var distinctWord in _distinctWords)
                 {
-                    distances[i] += Math.Pow(_weights[_distinctWords[r]][i] - _weights[_distinctWords[r]][articleIndex],2);
+                    firstVector.Add(_weights[distinctWord][i]);
+                    secondVector.Add(_weights[distinctWord][articleIndex]);
                 }
 
-                distances[i] = Math.Sqrt(distances[i]);
+                distances[i] = CurrentMetric.GetDistance(firstVector, secondVector);
             }
 
             return distances.Zip(_articles, (d, a) => (a, d)).ToList();
