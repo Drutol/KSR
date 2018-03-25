@@ -62,6 +62,7 @@
     </ApplicationDefinition>
     <Compile Include="Interafces\IMetric.cs" />
     <Compile Include="Metrics\EuclideanMetric.cs" />
+    <Compile Include="Metrics\ManhattanMetric.cs" />
     <Compile Include="Models\ClassifiedArticle.cs" />
     <Compile Include="WeightMatrix.cs" />
     <Page Include="MainWindow.xaml">
@@ -97,6 +98,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="Data\reut2-000.sgm">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

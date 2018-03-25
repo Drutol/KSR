@@ -16,6 +16,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <Button Click="AnalyseDocuments" Content="Analyze documents" Padding="16" HorizontalAlignment="Center"  Margin="0,40,10,0"/>
                 <Button Click="ButtonBase_OnClick" IsEnabled="True" Content="Build weight matrix" Padding="16" HorizontalAlignment="Center"  Margin="10,40,0,0"/>
+                <Button Click="ClassifyDocuments"  IsEnabled="True" Content="Classify" Padding="16" HorizontalAlignment="Center"  Margin="20,40,0,0"/>
             </StackPanel>
 
             <Border Background="#c2c2c2" Margin="0,20,0,0" Padding="20">
@@ -35,15 +36,14 @@
                         
                         <GroupBox Header="Metric" Margin="16,0" VerticalAlignment="Top">
                             <StackPanel Margin="16">
-                                <RadioButton Content="Euclides"/>
-                                <RadioButton Content="Manhattan"/>
-                                <RadioButton Content="Chebyshev"/>
+                                <RadioButton Content="Euclidean" IsChecked="True" Click="EuclideanMetricOnClick"/>
+                                <RadioButton Content="Manhattan" Click="ManhattanMetricOnClick"/>
                             </StackPanel>
                         </GroupBox>
 
                         <StackPanel Margin="20,0,0,0">
-                            <TextBlock Text="Articles with selected category tags:" FontSize="18"/>
-                            <Slider x:Name="KSlider" Minimum="1" Maximum="10" IsSnapToTickEnabled="True" TickFrequency="1"  FontSize="20"/>
+                            <TextBlock Text="Parameter k of kNN algorithm" FontSize="18"/>
+                            <Slider x:Name="KSlider" Minimum="1" Maximum="20" IsSnapToTickEnabled="True" TickFrequency="1"  FontSize="20"/>
                             <TextBlock Width="20" HorizontalAlignment="Center" TextAlignment="Center" FontSize="16" Text="{Binding ElementName=KSlider,Path=Value}"/>
                         </StackPanel>
 
