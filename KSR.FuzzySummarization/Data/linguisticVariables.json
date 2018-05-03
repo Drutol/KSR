@@ -1,0 +1,35 @@
+﻿[
+  {
+    "Name": "middle aged",
+    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionParameters": [
+      20.0,
+      30.0,
+      40.0,
+      50.0
+    ],
+    "MemberToExtract": "Age"
+  },
+  {
+    "Name": "young",
+    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionParameters": [
+      0,
+      10,
+      20,
+      30
+    ],
+    "MemberToExtract": "Age"
+  }, 
+  {
+    "Name": "elderly",
+    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionParameters": [
+      50,
+      60,
+      80,
+      100
+    ],
+    "MemberToExtract": "Age"
+  }
+]
