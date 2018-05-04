@@ -17,7 +17,7 @@ namespace KSR.FuzzySummarization.Model
         public Occupation Occupation { get; set; }
         public Relationship Relationship { get; set; }
         public Race Race { get; set; }
-        public bool IsMale { get; set; }
+        public Gender Gender { get; set; }
         public int CapitalGain { get; set; }
         public int CapitalLoss { get; set; }
         public int HoursPerWeek { get; set; }
@@ -147,5 +147,11 @@ namespace KSR.FuzzySummarization.Model
         Peru,
         Hong,
         HolandNetherlands
+    }
+
+    public enum Gender
+    {
+        Male,
+        Female
     }
 }

@@ -19,6 +19,7 @@ using Aq.ExpressionJsonSerializer;
 using KSR.FuzzySummarization.DataProcessing;
 using KSR.FuzzySummarization.FuzzyLogic;
 using KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions;
+using KSR.FuzzySummarization.Model;
 using Newtonsoft.Json;
 
 namespace KSR.FuzzySummarization
@@ -35,24 +36,75 @@ namespace KSR.FuzzySummarization
 
             var data = new DataExtractor().ObtainRecords().ToList();
             var variables =
-                JsonConvert.DeserializeObject<List<LinguisticVariable>>(File.ReadAllText("Data/linguisticVariables.json"));
+                JsonConvert.DeserializeObject<List<LinguisticVariable>>(
+                    File.ReadAllText("Data/linguisticVariables.json"));
             var quantifiers =
-                JsonConvert.DeserializeObject<List<LinguisticVariable>>(File.ReadAllText("Data/linguisticQuantifiers.json"));
-            foreach (var linguisticVariableGroup in variables.GroupBy(variable => variable.MemberToExtract))
+                JsonConvert.DeserializeObject<List<LinguisticVariable>>(
+                    File.ReadAllText("Data/linguisticQuantifiers.json"));
+
+            var groupings = variables.GroupBy(variable => variable.MemberToExtract).ToList();
+            var sets = new List<FuzzySet>();
+            foreach (var grouping in groupings)
             {
-                foreach (var linguisticVariable in linguisticVariableGroup)
+                var movedGroping = new List<Tuple<string, List<LinguisticVariable>>>();
+                movedGroping.Add(new Tuple<string, List<LinguisticVariable>>(grouping.Key,grouping.ToList()));
+                foreach (var g in groupings.Where(linguisticVariables => linguisticVariables != grouping).Take(2))
                 {
-                    var set = new FuzzySet(data, linguisticVariable);
-                    (LinguisticVariable Quantifier, double Match) mostMatchingQuantifier = (null, 0);
-                    foreach (var quantifier in quantifiers)
-                    {
-                        var match = quantifier.MembershipFunction.GetMembership(set.Support.Count());
-                        if (match > mostMatchingQuantifier.Match)
-                            mostMatchingQuantifier = (quantifier, match);
-                    }
-                    Debug.WriteLine($"{mostMatchingQuantifier.Quantifier.Name} people are {linguisticVariable.Name}");
+                    movedGroping.Add(new Tuple<string, List<LinguisticVariable>>(g.Key,g.ToList()));
                 }
-            }                   
+                sets = sets.Concat(GetSets(data, movedGroping)).ToList();
+            }
+            foreach (var set in sets)
+            {
+                (LinguisticVariable Quantifier, double Match, double ExactCount) mostMatchingQuantifier = (null, 0, 0);
+                foreach (var quantifier in quantifiers)
+                {
+                    var supportCount = set.Support.Count();
+                    var match = quantifier.MembershipFunction.GetMembership(supportCount);
+                    if (match > mostMatchingQuantifier.Match)
+                        mostMatchingQuantifier = (quantifier, match, supportCount);
+                }
+
+                Debug.WriteLine(
+                    $"[{mostMatchingQuantifier.ExactCount}]{mostMatchingQuantifier.Quantifier.Name} people are {set}");
+            }
+        }
+
+        private List<FuzzySet> GetSets(IEnumerable<DataRecord> data, IEnumerable<Tuple<string,List<LinguisticVariable>>> vars)
+        {
+            List<FuzzySet> sets = new List<FuzzySet>();
+
+            int i = 1;
+            var totalGroups = vars.Count();
+            foreach (var group in vars)
+            {
+                if (!sets.Any())
+                {
+                    foreach (var linguisticVariable in group.Item2)
+                    {
+                        sets.Add(new FuzzySet(data, linguisticVariable));
+                    }
+                }
+                else
+                {
+                    var combo = new List<FuzzySet>();
+                    foreach (var fuzzySet in sets)
+                    {
+                        foreach (var linguisticVariable in group.Item2)
+                        {
+                            if (i == totalGroups || fuzzySet.HasOr)
+                                combo.Add(fuzzySet & new FuzzySet(data, linguisticVariable));
+                            else
+                                combo.Add(fuzzySet | new FuzzySet(data, linguisticVariable));
+                        }
+                    }
+                    sets = combo;
+                    
+                }
+
+                i++;
+            }
+            return sets;
         }
     }
 }

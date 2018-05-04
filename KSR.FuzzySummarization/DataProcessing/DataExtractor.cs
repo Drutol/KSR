@@ -30,7 +30,7 @@ namespace KSR.FuzzySummarization.DataProcessing
                     Occupation = (Occupation) _occupations.IndexOf(tokens[6]),
                     Relationship = (Relationship) _relationships.IndexOf(tokens[7]),
                     Race = (Race) _races.IndexOf(tokens[8]),
-                    IsMale = tokens[9] == "Male",
+                    Gender = tokens[9] == "Male" ? Gender.Male :Gender.Female,
                     CapitalGain = int.Parse(tokens[10]),
                     CapitalLoss = int.Parse(tokens[11]),
                     HoursPerWeek = int.Parse(tokens[12]),
