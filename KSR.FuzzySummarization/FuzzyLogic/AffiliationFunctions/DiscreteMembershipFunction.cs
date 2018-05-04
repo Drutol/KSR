@@ -10,11 +10,11 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
     public class DiscreteMembershipFunction : IMembershipFunction
     {
         private List<double> _boundaries;
-        private Dictionary<int, double> _memberships;
+        private readonly Dictionary<int, double> _memberships = new Dictionary<int, double>();
 
         public double GetMembership(double x)
         {
-            throw new NotImplementedException();
+            return _memberships[(int) x];
         }
 
         public List<double> Parameters
@@ -29,7 +29,6 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
                 {
                     _memberships[(int) value[i]] = value[i] + 1;
                 }
-
             }
         }
     }

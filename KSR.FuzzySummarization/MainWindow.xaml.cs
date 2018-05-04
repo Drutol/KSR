@@ -36,14 +36,23 @@ namespace KSR.FuzzySummarization
             var data = new DataExtractor().ObtainRecords().ToList();
             var variables =
                 JsonConvert.DeserializeObject<List<LinguisticVariable>>(File.ReadAllText("Data/linguisticVariables.json"));
-            foreach (var linguisticVariable in variables)
+            var quantifiers =
+                JsonConvert.DeserializeObject<List<LinguisticVariable>>(File.ReadAllText("Data/linguisticQuantifiers.json"));
+            foreach (var linguisticVariableGroup in variables.GroupBy(variable => variable.MemberToExtract))
             {
-                var set = new FuzzySet(data, linguisticVariable);
-                var support = set.Support.ToList();
-                Debug.WriteLine($"{support.Count} people are {linguisticVariable.Name}");
-            }
-            
-            
+                foreach (var linguisticVariable in linguisticVariableGroup)
+                {
+                    var set = new FuzzySet(data, linguisticVariable);
+                    (LinguisticVariable Quantifier, double Match) mostMatchingQuantifier = (null, 0);
+                    foreach (var quantifier in quantifiers)
+                    {
+                        var match = quantifier.MembershipFunction.GetMembership(set.Support.Count());
+                        if (match > mostMatchingQuantifier.Match)
+                            mostMatchingQuantifier = (quantifier, match);
+                    }
+                    Debug.WriteLine($"{mostMatchingQuantifier.Quantifier.Name} people are {linguisticVariable.Name}");
+                }
+            }                   
         }
     }
 }

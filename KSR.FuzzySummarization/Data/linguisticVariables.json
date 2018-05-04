@@ -20,7 +20,7 @@
       30
     ],
     "MemberToExtract": "Age"
-  }, 
+  },
   {
     "Name": "elderly",
     "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
@@ -31,5 +31,40 @@
       100
     ],
     "MemberToExtract": "Age"
+  },
+  {
+    "Name": "manual labour",
+    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionParameters": [
+      0.0,
+      0.0,
+      1.0,
+      0.0,
+      2.0,
+      0.4,
+      3.0,
+      0.2,
+      4.0,
+      0.0,
+      5.0,
+      0.0,
+      6.0,
+      0.0,
+      7.0,
+      0.8,
+      8.0,
+      0.2,
+      9.0,
+      1.0,
+      10.0,
+      0.9,
+      11.0,
+      0.2,
+      12.0,
+      0.7,
+      13.0,
+      1.0
+    ],
+    "MemberToExtract": "Occupation"
   }
 ]

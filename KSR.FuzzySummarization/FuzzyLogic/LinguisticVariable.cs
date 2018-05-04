@@ -19,24 +19,29 @@ namespace KSR.FuzzySummarization
         public List<double> MembershipFunctionParameters { get; set; }
         public string MemberToExtract { get; set; }
 
-        [JsonIgnore]
-        public IMembershipFunction MembershipFunction { get; set; }
-        [JsonIgnore]
-        public Func<DataRecord, double> Extractor { get; set; }
+        [JsonIgnore] public IMembershipFunction MembershipFunction { get; set; }
+        [JsonIgnore] public Func<DataRecord, double> Extractor { get; set; }
+        [JsonIgnore] public bool IsQuantifier { get; set; }
 
         [OnDeserialized]
         internal void OnSerializingMethod(StreamingContext context)
         {
             MembershipFunction = (IMembershipFunction) Activator.CreateInstance(MembershipFunctionType);
             MembershipFunction.Parameters = MembershipFunctionParameters;
+            if (MemberToExtract != null)
+            {
+                var getterMethodInfo = typeof(DataRecord).GetProperty(MemberToExtract).GetGetMethod();
+                var entity = Expression.Parameter(typeof(DataRecord));
+                var getterCall = Expression.Call(entity, getterMethodInfo);
+                var castToObject = Expression.Convert(getterCall, typeof(double));
+                var lambda = Expression.Lambda(castToObject, entity);
 
-            var getterMethodInfo = typeof(DataRecord).GetProperty(MemberToExtract).GetGetMethod();
-            var entity = Expression.Parameter(typeof(DataRecord));
-            var getterCall = Expression.Call(entity, getterMethodInfo);
-            var castToObject = Expression.Convert(getterCall, typeof(double));
-            var lambda = Expression.Lambda(castToObject, entity);
-
-            Extractor = (Func<DataRecord, double>)lambda.Compile();
+                Extractor = (Func<DataRecord, double>) lambda.Compile();
+            }
+            else
+            {
+                IsQuantifier = true;
+            }
         }
     }
 }
