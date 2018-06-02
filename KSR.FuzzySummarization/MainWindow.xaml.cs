@@ -33,7 +33,12 @@ namespace KSR.FuzzySummarization
         {
             InitializeComponent();
 
+            Loaded += OnLoaded;
+           
+        }
 
+        private void OnLoaded(object sender, RoutedEventArgs e)
+        {
             var data = new DataExtractor().ObtainRecords().ToList();
             var variables =
                 JsonConvert.DeserializeObject<List<LinguisticVariable>>(
@@ -41,39 +46,56 @@ namespace KSR.FuzzySummarization
             var quantifiers =
                 JsonConvert.DeserializeObject<List<LinguisticVariable>>(
                     File.ReadAllText("Data/linguisticQuantifiers.json"));
+            var qualificators =
+                JsonConvert.DeserializeObject<List<LinguisticVariable>>(
+                    File.ReadAllText("Data/linguisticQualificators.json"));
 
             var groupings = variables.GroupBy(variable => variable.MemberToExtract).ToList();
             var sets = new List<FuzzySet>();
             foreach (var grouping in groupings)
             {
-                var movedGroping = new List<Tuple<string, List<LinguisticVariable>>>();
-                movedGroping.Add(new Tuple<string, List<LinguisticVariable>>(grouping.Key,grouping.ToList()));
-                foreach (var g in groupings.Where(linguisticVariables => linguisticVariables != grouping).Take(2))
+                var movedGroping = new List<Tuple<string, List<LinguisticVariable>>>
                 {
-                    movedGroping.Add(new Tuple<string, List<LinguisticVariable>>(g.Key,g.ToList()));
-                }
+                    new Tuple<string, List<LinguisticVariable>>(grouping.Key, grouping.ToList())
+                };
+                movedGroping.AddRange(groupings.Where(linguisticVariables => linguisticVariables != grouping).Take(2)
+                    .Select(g => new Tuple<string, List<LinguisticVariable>>(g.Key, g.ToList())));
                 sets = sets.Concat(GetSets(data, movedGroping)).ToList();
             }
+
+            int i = 0;
+            var summarizations = new List<SummarizationResult>();
             foreach (var set in sets)
             {
-                (LinguisticVariable Quantifier, double Match, double ExactCount) mostMatchingQuantifier = (null, 0, 0);
+                set.Qualificator = new FuzzySet(data, qualificators[i++]);
+                if (i == qualificators.Count)
+                    i = 0;
+                var result = new SummarizationResult();
+                string best = "";
+                double quality = 0;
                 foreach (var quantifier in quantifiers)
                 {
-                    var supportCount = set.Support.Count();
-                    var match = quantifier.MembershipFunction.GetMembership(supportCount);
-                    if (match > mostMatchingQuantifier.Match)
-                        mostMatchingQuantifier = (quantifier, match, supportCount);
+                    var t = set.DegreeOfTruth(quantifier);
+                    var summarization = $"{quantifier.Name} people {set} [{t}]";
+                    if (t > quality)
+                    {
+                        best = summarization;
+                        quality = t;
+                    }
+                    
+                    result.AllSummarizations.Add(summarization);
                 }
 
-                Debug.WriteLine(
-                    $"[{mostMatchingQuantifier.ExactCount}]{mostMatchingQuantifier.Quantifier.Name} people are {set}");
+                result.BestSummarization = best;
+                summarizations.Add(result);
             }
+
+            Results.ItemsSource = summarizations;
         }
 
         private List<FuzzySet> GetSets(IEnumerable<DataRecord> data, IEnumerable<Tuple<string,List<LinguisticVariable>>> vars)
         {
             List<FuzzySet> sets = new List<FuzzySet>();
-
             int i = 1;
             var totalGroups = vars.Count();
             foreach (var group in vars)

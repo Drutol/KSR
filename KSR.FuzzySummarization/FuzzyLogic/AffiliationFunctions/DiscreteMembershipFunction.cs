@@ -27,7 +27,7 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
                 _boundaries = value;
                 for (int i = 0; i < value.Count; i+=2)
                 {
-                    _memberships[(int) value[i]] = value[i] + 1;
+                    _memberships[(int) value[i]] = value[i + 1];
                 }
             }
         }
