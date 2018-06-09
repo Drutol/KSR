@@ -64,32 +64,45 @@ namespace KSR.FuzzySummarization
             }
 
             int i = 0;
+            var sw = new Stopwatch();
+            sw.Start();
             var summarizations = new List<SummarizationResult>();
-            foreach (var set in sets)
+            List<double> qualities = new List<double>();
+            foreach (var fuzzySet in sets)
             {
-                set.Qualificator = new FuzzySet(data, qualificators[i++]);
+                Process(fuzzySet);
+                fuzzySet.Qualificator = new FuzzySet(data, qualificators[i++]);
                 if (i == qualificators.Count)
                     i = 0;
-                var result = new SummarizationResult();
-                string best = "";
-                double quality = 0;
-                foreach (var quantifier in quantifiers)
+                Process(fuzzySet);
+
+
+                void Process(FuzzySet set)
                 {
-                    var t = set.DegreeOfTruth(quantifier);
-                    var summarization = $"{quantifier.Name} people {set} [{t}]";
-                    if (t > quality)
+                    var result = new SummarizationResult();
+                    string best = "";
+                    double quality = 0;
+                    foreach (var quantifier in quantifiers)
                     {
-                        best = summarization;
-                        quality = t;
+                        var t = set.DegreeOfTruth(quantifier);
+                        var summarization = $"{quantifier.Name} people {set} [Quality: {t:N5}]";
+                        if (t > quality)
+                        {
+                            best = summarization;
+                            quality = t;
+                        }
+
+                        result.AllSummarizations.Add(summarization);
                     }
-                    
-                    result.AllSummarizations.Add(summarization);
+                    qualities.Add(quality);
+                    result.BestSummarization = best;
+                    summarizations.Add(result);
                 }
 
-                result.BestSummarization = best;
-                summarizations.Add(result);
+ 
             }
-
+            sw.Stop();
+            var avg = qualities.Average();
             Results.ItemsSource = summarizations;
         }
 
@@ -97,7 +110,7 @@ namespace KSR.FuzzySummarization
         {
             List<FuzzySet> sets = new List<FuzzySet>();
             int i = 1;
-            var totalGroups = vars.Count();
+            vars = vars.Take(1);
             foreach (var group in vars)
             {
                 if (!sets.Any())
@@ -112,18 +125,18 @@ namespace KSR.FuzzySummarization
                     var combo = new List<FuzzySet>();
                     foreach (var fuzzySet in sets)
                     {
+                        int j = 0;
                         foreach (var linguisticVariable in group.Item2)
                         {
-                            if (i == totalGroups || fuzzySet.HasOr)
+                            if (j < sets.Count-1 || fuzzySet.HasOr)
                                 combo.Add(fuzzySet & new FuzzySet(data, linguisticVariable));
                             else
                                 combo.Add(fuzzySet | new FuzzySet(data, linguisticVariable));
+                            j++;
                         }
                     }
-                    sets = combo;
-                    
+                    sets = combo;                    
                 }
-
                 i++;
             }
             return sets;

@@ -189,7 +189,9 @@ namespace KSR.FuzzySummarization.FuzzyLogic
             degrees.Add(Math.Min(1,quantifierCardinalNumber / quantifierElements));
 
             //t8
-            degrees.Add(quantifier.MembershipFunction.GetMembership(Support.Count()));
+            var sc = Support.Count();
+            var f = 1 + (_elements.Count / (double)(_allElements ?? _elements).Count);
+            degrees.Add(quantifier.MembershipFunction.GetMembership(sc * f));
 
             if (Qualificator != null)
             {   
@@ -201,8 +203,8 @@ namespace KSR.FuzzySummarization.FuzzyLogic
                 degrees.Add(2 * Math.Pow(0.5, Qualificator._linguisticVariableGroup.Flatten().Count));
             }
             
-            if(degrees.Any(d => d < 0 || d > 1))
-                Debugger.Break();
+            //if(degrees.Any(d => d < 0 || d > 1))
+            //    Debugger.Break();
 
             return degrees.Average();
         }
