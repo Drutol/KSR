@@ -31,7 +31,8 @@
   },
   {
     "Name": "a bit over 4000",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       4000,
       4000,
@@ -41,7 +42,8 @@
   },
   {
     "Name": "1/5",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       5000,
       6000,
@@ -50,7 +52,8 @@
   },
   {
     "Name": "between 6000 and 8000",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       6000,
       6000,
@@ -90,7 +93,8 @@
   },
   {
     "Name": "more than half",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       15000,
       20000,
@@ -99,7 +103,8 @@
   },
   {
     "Name": "majority",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       22000,
       26000,
@@ -108,7 +113,8 @@
   },
   {
     "Name": "almost all",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       26000,
       29000,

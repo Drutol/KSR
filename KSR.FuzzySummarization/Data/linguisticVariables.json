@@ -1,7 +1,8 @@
 ﻿[
   {
     "Name": "children",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0,
       0,
@@ -12,7 +13,8 @@
   },
   {
     "Name": "young",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       13,
       17,
@@ -23,7 +25,8 @@
   },
   {
     "Name": "young adults",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       23,
       27,
@@ -31,10 +34,11 @@
       34
     ],
     "MemberToExtract": "Age"
-  }, 
+  },
   {
     "Name": "adults",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       33,
       37,
@@ -42,10 +46,11 @@
       65
     ],
     "MemberToExtract": "Age"
-  }, 
+  },
   {
     "Name": "elderly",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       60,
       70,
@@ -56,7 +61,8 @@
   },
   {
     "Name": "in serious relationship",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0.0,
       1.0,
@@ -75,7 +81,8 @@
   },
   {
     "Name": "less commited to relationship",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0.0,
       0.0,
@@ -94,15 +101,17 @@
   },
   {
     "Name": "well educated",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TrapezoidalMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
-        9,13,17,17
+      9, 13, 17, 17
     ],
     "MemberToExtract": "EductaionNumber"
   },
   {
     "Name": "poorly educated",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0,
       3,
@@ -112,7 +121,8 @@
   },
   {
     "Name": "decently educated",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.TriangularMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       6,
       8,

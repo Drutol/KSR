@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using KSR.FuzzySummarization.Interfaces;
 
 namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
 {
     public class DiscreteMembershipFunction : IMembershipFunction
     {
-        private List<double> _boundaries;
         private readonly Dictionary<int, double> _memberships = new Dictionary<int, double>();
+        private List<double> _boundaries;
 
         public double GetMembership(double x)
         {
@@ -25,10 +22,7 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
                 if (value.Count < 2 || value.Count % 2 != 0)
                     throw new ArgumentException();
                 _boundaries = value;
-                for (int i = 0; i < value.Count; i+=2)
-                {
-                    _memberships[(int) value[i]] = value[i + 1];
-                }
+                for (var i = 0; i < value.Count; i += 2) _memberships[(int) value[i]] = value[i + 1];
             }
         }
     }

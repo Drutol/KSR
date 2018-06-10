@@ -1,7 +1,8 @@
 ﻿[
   {
     "Name": "manual labourer",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0.0,
       0.0,
@@ -36,7 +37,8 @@
   },
   {
     "Name": "office worker",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0,
       1.0,
@@ -71,7 +73,8 @@
   },
   {
     "Name": "male",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0.0,
       1.0,
@@ -82,7 +85,8 @@
   },
   {
     "Name": "female",
-    "MembershipFunctionType": "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
+    "MembershipFunctionType":
+      "KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions.DiscreteMembershipFunction, KSR.FuzzySummarization, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null",
     "MembershipFunctionParameters": [
       0.0,
       0.0,

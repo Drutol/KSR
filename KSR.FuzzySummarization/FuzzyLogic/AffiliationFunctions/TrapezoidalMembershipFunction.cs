@@ -6,25 +6,16 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
 {
     public class TrapezoidalMembershipFunction : IMembershipFunction
     {
-        private List<double> _boundaries;
         private double _a, _b, _c, _d;
+        private List<double> _boundaries;
 
         public double GetMembership(double x)
         {
-            if (x >= _b && x <= _c)
-            {
-                return 1;
-            }
+            if (x >= _b && x <= _c) return 1;
 
-            if (x > _a && x < _b)
-            {
-                return 1.0 / (_b - _a) * x + 1.0 - (1.0 / (_b - _a)) * _b;
-            }
+            if (x > _a && x < _b) return 1.0 / (_b - _a) * x + 1.0 - 1.0 / (_b - _a) * _b;
 
-            if (x > _c && x < _d)
-            {
-                return 1.0 / (_c - _d) * x + 1.0 - (1.0 / (_c - _d)) * _c;
-            }
+            if (x > _c && x < _d) return 1.0 / (_c - _d) * x + 1.0 - 1.0 / (_c - _d) * _c;
 
             return 0;
         }

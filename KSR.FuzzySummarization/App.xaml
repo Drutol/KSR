@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:KSR.FuzzySummarization"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+
     </Application.Resources>
 </Application>

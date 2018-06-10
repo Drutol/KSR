@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using KSR.FuzzySummarization.Model;
 
@@ -186,23 +185,23 @@ namespace KSR.FuzzySummarization.FuzzyLogic
             var quantifierSet = Enumerable.Range((int) quantifier.MembershipFunctionParameters.First(),
                 (int) quantifier.MembershipFunctionParameters.Last() - 1);
             var quantifierCardinalNumber = quantifierSet.Sum(i => quantifier.MembershipFunction.GetMembership(i));
-            degrees.Add(Math.Min(1,quantifierCardinalNumber / quantifierElements));
+            degrees.Add(Math.Min(1, quantifierCardinalNumber / quantifierElements));
 
             //t8
             var sc = Support.Count();
-            var f = 1 + (_elements.Count / (double)(_allElements ?? _elements).Count);
+            var f = 1 + _elements.Count / (double) (_allElements ?? _elements).Count;
             degrees.Add(quantifier.MembershipFunction.GetMembership(sc * f));
 
             if (Qualificator != null)
-            {   
+            {
                 //t9
-                degrees.Add(1 - Qualificator.Support.Count() / (double)_allElements.Count);
+                degrees.Add(1 - Qualificator.Support.Count() / (double) _allElements.Count);
                 //t10
                 degrees.Add(1 - Qualificator.CardinalNumber / _allElements.Count);
                 //t11
                 degrees.Add(2 * Math.Pow(0.5, Qualificator._linguisticVariableGroup.Flatten().Count));
             }
-            
+
             //if(degrees.Any(d => d < 0 || d > 1))
             //    Debugger.Break();
 

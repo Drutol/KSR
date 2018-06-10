@@ -1,14 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace KSR.FuzzySummarization.Interfaces
 {
     public interface IMembershipFunction
     {
-        double GetMembership(double x);
         List<double> Parameters { get; set; }
+        double GetMembership(double x);
     }
 }

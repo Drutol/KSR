@@ -6,25 +6,16 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
 {
     public class TriangularMembershipFunction : IMembershipFunction
     {
-        private List<double> _boundaries;
         private double _a, _b, _c;
+        private List<double> _boundaries;
 
         public double GetMembership(double x)
         {
-            if (Math.Abs(x - _b) < .00001)
-            {
-                return 1;
-            }
+            if (Math.Abs(x - _b) < .00001) return 1;
 
-            if (x > _a && x < _b)
-            {
-                return 1.0 / (_b - _a) * x + 1.0 - (1.0 / (_b - _a)) * _b;
-            }
+            if (x > _a && x < _b) return 1.0 / (_b - _a) * x + 1.0 - 1.0 / (_b - _a) * _b;
 
-            if (x > _b && x < _c)
-            {
-                return 1.0 / (_b - _c) * x + 1.0 - (1.0 / (_b - _c)) * _b;
-            }
+            if (x > _b && x < _c) return 1.0 / (_b - _c) * x + 1.0 - 1.0 / (_b - _c) * _b;
 
             return 0;
         }
@@ -34,7 +25,7 @@ namespace KSR.FuzzySummarization.FuzzyLogic.AffiliationFunctions
             get => _boundaries;
             set
             {
-                if(value.Count != 3)
+                if (value.Count != 3)
                     throw new ArgumentException();
                 _boundaries = value;
                 _a = value[0];
